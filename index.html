@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vimala Gandhi ❤️ Indhrakumar Wedding Countdown</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #1a001a, #2a002a);
+      position: relative;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Left Side - Single Image Display with Effects */
+    .photo-display {
+      width: 50%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-display img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: kenBurns 15s infinite alternate;
+    }
+
+    @keyframes kenBurns {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+
+    /* Right Side - Countdown Card */
+    .countdown-card {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .countdown-card h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4rem;
+      color: #ffd700;
+      text-shadow: 0 0 20px #ffd700, 0 0 30px #ff4500;
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { text-shadow: 0 0 10px #ffd700; }
+      50% { text-shadow: 0 0 20px #ff4500; }
+      100% { text-shadow: 0 0 10px #ffd700; }
+    }
+
+    .event {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .event h2 {
+      font-size: 2rem;
+      color: #ffeadb;
+      margin-bottom: 10px;
+    }
+
+    .countdown {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .time-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ffd700;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 5px #ffd700; }
+      50% { box-shadow: 0 0 15px #ff4500; }
+      100% { box-shadow: 0 0 5px #ffd700; }
+    }
+
+    .time-box span {
+      display: block;
+      font-size: 0.8rem;
+      color: #ffeadb;
+    }
+
+    /* Background Effects */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, rgba(0, 0, 0, 0.8) 70%);
+      z-index: -1;
+    }
+
+    .petal, .sparkle {
+      position: fixed;
+      z-index: -1;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #ffd700;
+    }
+
+    canvas#confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <div class="container">
+    <div class="photo-display">
+      <img src="image.jpg" alt="Vimala Gandhi and Indhrakumar">
+    </div>
+    <div class="countdown-card">
+      <h1>Vimala Gandhi ❤️ Indhrakumar</h1>
+      <div class="event">
+        <h2>Reception – Nov 2, 2025 @ 4:30 PM</h2>
+        <div class="countdown" id="reception"></div>
+      </div>
+      <div class="event">
+        <h2>Wedding – Nov 3, 2025 @ 7:00 AM</h2>
+        <div class="countdown" id="wedding"></div>
+      </div>
+      <div class="footer">Together Forever ✨</div>
+    </div>
+  </div>
+
+  <script>
+    // Countdown
+    function countdown(id, date) {
+      const target = new Date(date).getTime();
+      const el = document.getElementById(id);
+
+      function update() {
+        const now = new Date().getTime();
+        const diff = target - now;
+
+        if (diff <= 0) {
+          el.innerHTML = "<div class='time-box'>It's Time! 🎉</div>";
+          startConfetti();
+          clearInterval(interval);
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        el.innerHTML = `
+          <div class="time-box">${days}<span>Days</span></div>
+          <div class="time-box">${hours}<span>Hours</span></div>
+          <div class="time-box">${minutes}<span>Minutes</span></div>
+          <div class="time-box">${seconds}<span>Seconds</span></div>
+        `;
+      }
+
+      update();
+      const interval = setInterval(update, 1000);
+    }
+
+    countdown("reception", "Nov 2, 2025 16:30:00");
+    countdown("wedding", "Nov 3, 2025 07:00:00");
+
+    // Confetti
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confetti = [];
+    function ConfettiPiece() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height - canvas.height;
+      this.r = Math.random() * 6 + 4;
+      this.d = Math.random() * 20 + 10;
+      this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+      this.tilt = Math.random() * 10 - 10;
+    }
+
+    function startConfetti() {
+      for (let i = 0; i < 200; i++) confetti.push(new ConfettiPiece());
+      requestAnimationFrame(draw);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < confetti.length; i++) {
+        let p = confetti[i];
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+      }
+      updateConfetti();
+      requestAnimationFrame(draw);
+    }
+
+    function updateConfetti() {
+      for (let i = 0; i < confetti.length; i++) {
+        let p = confetti[i];
+        p.y += Math.cos(p.d) + 1 + p.r/2;
+        p.x += Math.sin(p.d);
+        if (p.y > canvas.height) p.y = -10;
+      }
+    }
+
+    // Petals & Sparkles
+    function createParticle(type) {
+      const p = document.createElement('div');
+      p.className = type;
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = Math.random() * 10 + 5 + 's';
+      p.style.opacity = Math.random() * 0.5 + 0.5;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 15000);
+    }
+
+    setInterval(() => createParticle('petal'), 500);
+    setInterval(() => createParticle('sparkle'), 300);
+  </script>
+  <style>
+    .petal {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: url('https://www.transparenttextures.com/patterns/rice-paper.png'), radial-gradient(circle at 30% 30%, #ff69b4, #ffd700);
+      border-radius: 50%;
+      animation: fall linear infinite;
+    }
+
+    .sparkle {
+      position: fixed;
+      width: 5px;
+      height: 5px;
+      background: #ffd700;
+      border-radius: 50%;
+      animation: sparkle 1.5s infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-20vh); }
+      100% { transform: translateY(100vh); }
+    }
+
+    @keyframes sparkle {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; transform: scale(1.5); }
+      100% { opacity: 0.5; transform: scale(1); }
+    }
+  </style>
+</body>
+</html>
